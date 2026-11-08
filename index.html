@@ -154,6 +154,8 @@ window.addEventListener('error', function(e){
   .stat .v{font-size:20px;font-weight:900;color:#e9d5ff;}
   .stat .k{font-size:9.5px;color:#a78bfa;letter-spacing:1.2px;text-transform:uppercase;margin-top:2px;}
   audio{height:0;width:0;opacity:0;}
+  #manualWrap.hidden{display:none !important;}
+  #manualWrap:not(.hidden){display:flex !important;}
 </style>
 </head>
 <body>
@@ -197,6 +199,7 @@ window.addEventListener('error', function(e){
       <button class="btn small" id="netHostBtn">СОЗДАТЬ КОМНАТУ</button>
       <input class="pname" id="netCode" placeholder="код" maxlength="6" style="width:104px;text-transform:uppercase;text-align:center;letter-spacing:3px;font-weight:800">
       <button class="btn small" id="netJoinBtn">ВОЙТИ ПО КОДУ</button>
+      <button class="btn small" id="manualBtn" title="Работает без сервера: коды копируются вручную">БЕЗ СЕРВЕРА</button>
       <div class="netstat" id="netStatus">хост создаёт комнату, друг вводит код → жмите «ФАРМИТЬ»</div>
     </div>
 
@@ -269,6 +272,44 @@ window.addEventListener('error', function(e){
       <button class="btn primary" id="againBtn">ЕЩЁ ФАРМ</button>
       <button class="btn" id="overMenuBtn">В МЕНЮ</button>
     </div>
+  </div>
+</div>
+
+<div id="manualWrap" class="hidden" style="position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;background:rgba(4,2,12,.93)">
+  <div style="width:min(720px,95vw);max-height:92vh;overflow:auto;padding:18px 20px;border-radius:16px;
+    background:linear-gradient(165deg,rgba(28,12,56,.99),rgba(8,5,20,.99));border:1px solid rgba(168,85,247,.5);
+    box-shadow:0 0 60px rgba(139,92,246,.4)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="font-size:17px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,#c084fc,#22d3ee);
+        -webkit-background-clip:text;background-clip:text;color:transparent">РУЧНОЙ РЕЖИМ</div>
+      <div style="flex:1;font-size:10.5px;color:#7c6bb0">без сервера · коды пересылаются в мессенджере</div>
+      <button class="btn small" id="manualClose" style="flex:0 0 auto">ЗАКРЫТЬ</button>
+    </div>
+    <div style="font-size:11px;color:#a78bfa;line-height:1.6;margin-bottom:8px">
+      Хост нажимает «СОЗДАТЬ КОД» и отправляет его другу. Друг вставляет код в поле «2», жмёт «ПРИНЯТЬ» и
+      отправляет свой ответ обратно. Хост вставляет ответ и жмёт «ПРИНЯТЬ» — готово.
+      Всё общение идёт напрямую между браузерами, сервер только не нужен.
+    </div>
+
+    <div style="font-size:10.5px;letter-spacing:1.5px;color:#67e8f9;margin:10px 0 4px">1 · МОЙ КОД</div>
+    <textarea id="manualOut" readonly placeholder="здесь появится код"
+      style="width:100%;height:76px;box-sizing:border-box;background:rgba(5,3,15,.9);border:1px solid rgba(139,92,246,.45);
+      border-radius:10px;color:#a3e635;font-family:monospace;font-size:9.5px;padding:8px;resize:none;outline:none"></textarea>
+    <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+      <button class="btn small" id="manualOffer">СОЗДАТЬ КОД</button>
+      <button class="btn small" id="manualCopy">КОПИРОВАТЬ</button>
+    </div>
+
+    <div style="font-size:10.5px;letter-spacing:1.5px;color:#67e8f9;margin:14px 0 4px">2 · КОД ДРУГА</div>
+    <textarea id="manualIn" placeholder="вставь код от друга"
+      style="width:100%;height:76px;box-sizing:border-box;background:rgba(5,3,15,.9);border:1px solid rgba(139,92,246,.45);
+      border-radius:10px;color:#e9d5ff;font-family:monospace;font-size:9.5px;padding:8px;resize:none;outline:none"></textarea>
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <button class="btn small" id="manualAnswer">ПРИНЯТЬ КОД</button>
+    </div>
+
+    <div style="margin-top:14px;padding:10px;border-radius:10px;background:rgba(139,92,246,.1);
+      border:1px solid rgba(139,92,246,.3);font-size:11px;color:#c4b5fd;line-height:1.5" id="manualLog">статус: ожидание</div>
   </div>
 </div>
 
@@ -1499,7 +1540,7 @@ function resetGame(){
   for(let i=0;i<26;i++) game.rain.push({x:rand(0,W),y:rand(0,H),z:rand(0.4,1.6)});
 }
 function startOnlineHost(){
-  if(!NET.connected){ toast('Сначала подключи друга'); return; }
+  if(!netIsConnected()){ toast('Сначала подключи друга'); return; }
   startGame('online');
   netSend({t:'start', mode:'online'});
   toast('Онлайн-кооп запущен');
@@ -1639,7 +1680,7 @@ function update(dt){
     return;
   }
   // watchdog: если гость молчит >6с — соединение мертво
-  if(isOnlineHost&&NET.connected&&NET.lastGuestPacket&&performance.now()-NET.lastGuestPacket>6000){
+  if(isOnlineHost&&netIsConnected()&&NET.lastGuestPacket&&performance.now()-NET.lastGuestPacket>6000){
     NET.connected=false;
     toast('Связь с другом потеряна');
     if(game.state==='playing'||game.state==='paused'){ closeShop(); endGame('disconnect'); }
@@ -2145,7 +2186,7 @@ function drawHUD(){
   if(game.mode==='online'){
     ctx.save();
     ctx.textAlign='right'; ctx.font='bold 10px monospace';
-    const ok=NET.connected;
+    const ok=netIsConnected();
     ctx.fillStyle=ok?'#a3e635':'#f87171';
     ctx.fillText(ok?('ОНЛАЙН ● '+(NET.role==='host'?'хост':'гость')):'НЕТ СВЯЗИ',W-game.arenaPad,18);
     ctx.restore();
@@ -2224,11 +2265,32 @@ window.addEventListener('resize',resize);
 const NET = {
   peer:null, conn:null, role:null, connected:false,
   roomCode:'', sendTimer:null, lastState:0, status:'offline', latency:0,
+  manualMode:false, manualCode:'', remoteId:null, awaitingAnswer:false,
 };
 function netStatus(txt, col){
   NET.status=txt;
   const el=document.getElementById('netStatus');
   if(el){ el.textContent=txt; el.style.color=col||'#a78bfa'; }
+  const lg=document.getElementById('manualLog');
+  if(lg) lg.textContent='статус: '+txt;
+}
+// понятные расшифровки ошибок PeerJS
+const PEER_ERR_HINTS={
+  'browser-incompatible':'браузер не поддерживает WebRTC',
+  'network':'нет связи с сигнальным сервером (в РФ часто заблокирован) → жми «БЕЗ СЕРВЕРА»',
+  'server-error':'сигнальный сервер PeerJS недоступен → жми «БЕЗ СЕРВЕРА»',
+  'socket-error':'сигнальный сервер отвалился → жми «БЕЗ СЕРВЕРА»',
+  'socket-closed':'сервер закрыл соединение → жми «БЕЗ СЕРВЕРА»',
+  'unavailable-id':'код комнаты занят, генерирую новый',
+  'peer-unavailable':'комната не найдена: проверь код или хост закрыл вкладку',
+  'invalid-id':'некорректный код комнаты',
+  'ssl-unavailable':'проблема с HTTPS на странице',
+  'webrtc':'WebRTC не запустился в этом браузере',
+};
+function peerErrText(err){
+  const t=err&&err.type;
+  const msg=err&&err.message?' · '+err.message:'';
+  return (PEER_ERR_HINTS[t]||('ошибка: '+(t||'неизвестная')))+msg;
 }
 function netCode4(){
   const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -2259,7 +2321,7 @@ function netHostStart(){
   NET.peer.on('error', err=>{
     console.warn('[net]', err);
     if(err.type==='unavailable-id'){ netStatus('код занят, генерирую новый…','#fbbf24'); setTimeout(netHostStart,300); }
-    else netStatus('ошибка: '+(err.type||'сеть'),'#f87171');
+    else { netStatus(peerErrText(err),'#f87171'); console.warn('[peer error]', err); }
   });
   NET.peer.on('connection', conn=>{
     if(NET.conn){ try{conn.close();}catch(e){} return; }
@@ -2309,17 +2371,220 @@ function netJoin(code){
       }
     });
   });
-  NET.peer.on('error', err=>{ console.warn('[net]', err); netStatus('ошибка: '+(err.type||'сеть'),'#f87171'); });
+  NET.peer.on('error', err=>{ console.warn('[net]', err); netStatus(peerErrText(err),'#f87171'); });
 }
+// ─────────────────────────────────────────────────────────
+//  РУЧНОЙ РЕЖИМ: сигналинг вручную (SDP-коды через мессенджер)
+//  Работает, даже когда сервер PeerJS недоступен
+// ─────────────────────────────────────────────────────────
+function manualOpen(){
+  document.getElementById('manualWrap').classList.remove('hidden');
+  document.getElementById('manualLog').textContent='статус: ожидание';
+}
+function manualClose(){
+  document.getElementById('manualWrap').classList.add('hidden');
+}
+// ── компактная упаковка SDP: выкидываем всё лишнее и сжимаем ──
+// SDP передаём как есть: формат требует CRLF, любая чистка ломает парсер.
+// Сжимаем только при упаковке (RLE), а распаковка возвращает исходные байты.
+function compactSdp(sdp){ return String(sdp); }
+function packCode(obj){
+  if(obj.sdp) obj=Object.assign({},obj,{sdp:compactSdp(obj.sdp)});
+  const json=JSON.stringify(obj);
+  const bytes=new TextEncoder().encode(json);
+  // ── безопасное RLE: всё кодируем в печатные символы, маркер '%' невозможен в данных
+  let out='';
+  for(let i=0;i<bytes.length;i++){
+    let run=1;
+    while(i+run<bytes.length && bytes[i+run]===bytes[i] && run<99) run++;
+    const b=bytes[i];
+    if(run>=4){
+      // %NN<hex>  — повтор
+      out+='%'+String(run).padStart(2,'0')+b.toString(16).padStart(2,'0');
+      i+=run-1;
+    } else {
+      // одиночный байт как 2 hex-символа
+      out+=b.toString(16).padStart(2,'0');
+    }
+  }
+  return out.toUpperCase();
+}
+function unpackCode(txt){
+  try{
+    const clean=String(txt).trim().replace(/\s+/g,'').toUpperCase();
+    const bytes=[];
+    for(let i=0;i<clean.length;){
+      if(clean[i]==='%'){
+        const n=parseInt(clean.slice(i+1,i+3),16);
+        const b=parseInt(clean.slice(i+3,i+5),16);
+        for(let k=0;k<n;k++) bytes.push(b);
+        i+=5;
+      } else {
+        bytes.push(parseInt(clean.slice(i,i+2),16));
+        i+=2;
+      }
+    }
+    const str=new TextDecoder().decode(new Uint8Array(bytes));
+    return JSON.parse(str);
+  }catch(e){ return null; }
+}
+function manualNeedPeer(){
+  if(typeof window.Peer!=='function'){
+    netStatus('PeerJS не загружен','#f87171'); return false;
+  }
+  if(!(window.RTCPeerConnection||window.webkitRTCPeerConnection)){
+    netStatus('WebRTC не поддерживается браузером','#f87171'); return false;
+  }
+  return true;
+}
+// ХОСТ: создаём оффер (чистый WebRTC, без PeerJS)
+function manualCreateOffer(){
+  if(!manualNeedPeer()) return;
+  netCleanup();
+  NET.role='host'; NET.manualMode=true;
+  const out=document.getElementById('manualOut');
+  out.value='готовлю код…';
+  netStatus('создаю оффер…','#fbbf24');
+  try{
+    const pc=new RTCPeerConnection({
+      iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]
+    });
+    NET.pc=pc;
+    // канал создаёт хост
+    const ch=pc.createDataChannel('game',{ordered:false,maxRetransmits:0});
+    manualAttachChannel(ch);
+    pc.oniceconnectionstatechange=()=>{
+      const st=pc.iceConnectionState;
+      if(st==='connected'||st==='completed'){
+        netStatus('СОЕДИНЕНО ✓','#a3e635');
+        NET.connected=true;
+        if(NET.sendTimer) clearInterval(NET.sendTimer);
+        NET.sendTimer=setInterval(netSendState,66);
+      }
+    };
+    pc.onconnectionstatechange=()=>{
+      if(pc.connectionState==='failed') netStatus('соединение не установилось (NAT?) — попробуй ещё раз','#f87171');
+    };
+    // Ждём полного сбора ICE, потом выдаём код (иначе не будет кандидатов)
+    const offerFinished=()=>{
+      out.value=packCode({type:'offer', sdp:pc.localDescription.sdp});
+      netStatus('код готов — отправь другу','#a3e635');
+    };
+    pc.createOffer()
+      .then(o=>pc.setLocalDescription(o))
+      .then(()=>{
+        // ждём ICE-кандидатов максимум 3 секунды
+        if(pc.iceGatheringState==='complete') offerFinished();
+        else{
+          const onGather=()=>{ if(pc.iceGatheringState==='complete'){ pc.removeEventListener('icegatheringstatechange',onGather); offerFinished(); } };
+          pc.addEventListener('icegatheringstatechange',onGather);
+          setTimeout(()=>{ if(!out.value||out.value==='готовлю код…') offerFinished(); }, 3000);
+        }
+      })
+      .catch(e=>{ netStatus('оффер не создался: '+(e.message||e),'#f87171'); out.value=''; });
+  }catch(e){
+    netStatus('WebRTC не запустился: '+(e.message||e),'#f87171');
+    out.value='';
+  }
+}
+function manualAttachChannel(ch){
+  NET.ch=ch;
+  ch.onopen=()=>{
+    NET.connected=true;
+    netStatus('СОЕДИНЕНО ✓','#a3e635');
+    toast('Подключено! Жми «ФАРМИТЬ»');
+    if(NET.sendTimer) clearInterval(NET.sendTimer);
+    NET.sendTimer=setInterval(netSendState,66);
+  };
+  ch.onmessage=ev=>{ try{ netOnData(JSON.parse(ev.data)); }catch(e){} };
+  ch.onclose=()=>{
+    NET.connected=false;
+    netStatus('соединение закрыто','#f87171');
+    if(game.mode==='online'&&(game.state==='playing'||game.state==='paused')){ closeShop(); endGame('disconnect'); }
+  };
+}
+// ГОСТЬ: принимаем оффер, генерим ответ
+function manualAcceptCode(){
+  const txt=document.getElementById('manualIn').value;
+  const data=unpackCode(txt);
+  if(!data){ netStatus('код не распознан — скопируй целиком без пробелов','#f87171'); return; }
+  if(!manualNeedPeer()) return;
+
+  if(data.type==='offer'){
+    netCleanup();
+    NET.role='guest'; NET.manualMode=true;
+    const out=document.getElementById('manualOut');
+    out.value='готовлю ответ…';
+    netStatus('принимаю код хоста…','#fbbf24');
+    try{
+      const pc=new RTCPeerConnection({
+        iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]
+      });
+      NET.pc=pc;
+      // канал приходит от хоста
+      pc.ondatachannel=ev=>manualAttachChannel(ev.channel);
+      pc.oniceconnectionstatechange=()=>{
+        const st=pc.iceConnectionState;
+        if(st==='connected'||st==='completed'){
+          netStatus('СОЕДИНЕНО ✓','#a3e635');
+          NET.connected=true;
+          if(NET.sendTimer) clearInterval(NET.sendTimer);
+          NET.sendTimer=setInterval(netSendState,66);
+        }
+      };
+      pc.setRemoteDescription({type:'offer',sdp:data.sdp})
+        .then(()=>pc.createAnswer())
+        .then(a=>pc.setLocalDescription(a))
+        .then(()=>{
+          const done=()=>{
+            out.value=packCode({type:'answer', sdp:pc.localDescription.sdp});
+            netStatus('ответ готов — отправь его хосту','#a3e635');
+          };
+          if(pc.iceGatheringState==='complete') done();
+          else{
+            const onGather=()=>{ if(pc.iceGatheringState==='complete'){ pc.removeEventListener('icegatheringstatechange',onGather); done(); } };
+            pc.addEventListener('icegatheringstatechange',onGather);
+            setTimeout(()=>{ if(out.value==='готовлю ответ…') done(); }, 3000);
+          }
+        })
+        .catch(e=>{ netStatus('ответ не создался: '+(e.message||e),'#f87171'); out.value=''; });
+    }catch(e){
+      netStatus('WebRTC не запустился: '+(e.message||e),'#f87171');
+      out.value='';
+    }
+    return;
+  }
+
+  if(data.type==='answer'){
+    if(!NET.pc){ netStatus('сначала создай свой код','#fbbf24'); return; }
+    netStatus('принимаю ответ…','#fbbf24');
+    NET.pc.setRemoteDescription({type:'answer',sdp:data.sdp})
+      .then(()=>netStatus('ответ принят — ждём соединения…','#fbbf24'))
+      .catch(e=>netStatus('не принял ответ: '+(e.message||e),'#f87171'));
+    return;
+  }
+  netStatus('неизвестный тип кода','#f87171');
+}
+
 function netCleanup(){
   if(NET.sendTimer){ clearInterval(NET.sendTimer); NET.sendTimer=null; }
+  if(NET.ch){ try{ NET.ch.close(); }catch(e){} NET.ch=null; }
+  if(NET.pc){ try{ NET.pc.close(); }catch(e){} NET.pc=null; }
   if(NET.conn){ try{ NET.conn.close(); }catch(e){} NET.conn=null; }
   if(NET.peer){ try{ NET.peer.destroy(); }catch(e){} NET.peer=null; }
-  NET.connected=false; NET.roomCode=''; 
+  NET.connected=false; NET.roomCode='';
 }
-function netSend(obj){ if(NET.conn&&NET.conn.open){ try{ NET.conn.send(obj); }catch(e){} } }
+function netSend(obj){
+  // 1) PeerJS-соединение
+  if(NET.conn&&NET.conn.open){ try{ NET.conn.send(obj); return; }catch(e){} }
+  // 2) чистый WebRTC DataChannel (ручной режим без сервера)
+  if(NET.ch&&NET.ch.readyState==='open'){ try{ NET.ch.send(JSON.stringify(obj)); return; }catch(e){} }
+}
+function netIsConnected(){
+  return NET.connected || (NET.ch&&NET.ch.readyState==='open') || (NET.conn&&NET.conn.open);
+}
 function netSendState(){
-  if(!NET.connected) return;
+  if(!netIsConnected()) return;
   const now=performance.now();
   if(now-NET.lastState<50) return;
   NET.lastState=now;
@@ -2449,6 +2714,17 @@ function setMode(m){
 document.querySelectorAll('.mode').forEach(el=>el.onclick=()=>setMode(el.dataset.mode));
 setMode('solo');
 document.getElementById('netHostBtn').onclick=()=>netHostStart();
+// ── ручной режим ──
+document.getElementById('manualBtn').onclick=()=>manualOpen();
+document.getElementById('manualClose').onclick=()=>manualClose();
+document.getElementById('manualOffer').onclick=()=>manualCreateOffer();
+document.getElementById('manualAnswer').onclick=()=>manualAcceptCode();
+document.getElementById('manualCopy').onclick=async()=>{
+  const out=document.getElementById('manualOut');
+  if(!out.value||out.value==='готовлю код…'){ toast('Сначала создай код'); return; }
+  try{ await navigator.clipboard.writeText(out.value); toast('Скопировано — отправь другу'); }
+  catch(e){ out.select(); document.execCommand&&document.execCommand('copy'); toast('Выделено — скопируй вручную'); }
+};
 document.getElementById('netHostBtn').addEventListener('mouseenter',function(){
   if(NET.connected||NET.role==='host') this.textContent='НОВАЯ КОМНАТА';
 });
@@ -2458,7 +2734,7 @@ document.getElementById('netHostBtn').addEventListener('mouseleave',function(){
 document.getElementById('netJoinBtn').onclick=()=>netJoin();
 document.getElementById('netCode').addEventListener('keydown', e=>{ if(e.code==='Enter') netJoin(); });
 document.getElementById('startBtn').onclick=()=>{
-  if(NET.role==='host'&&NET.connected) startOnlineHost();
+  if(NET.role==='host'&&netIsConnected()) startOnlineHost();
   else startGame(menuMode);
 };
 document.getElementById('resumeBtn').onclick=resumeGame;
@@ -2496,6 +2772,6 @@ renderEnv();                  // и только потом проверяем �
 resize();
 requestAnimationFrame(frame);
 </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a573f3b2ddb9a802',t:'MTc5NDEzNDM0Ng=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a573f3b2ddb9a802',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
