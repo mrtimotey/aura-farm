@@ -1,72 +1,159 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8">
+<html lang="ru" data-theme="light"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Контрольная точка 2 — Теоретическая часть</title>
 <style>
   * { box-sizing: border-box; }
-  body { margin:0; padding:26px 16px 60px; background:#eef2f7;
-         font-family: "Segoe UI", Arial, sans-serif; color:#243447; line-height:1.55; }
+  :root {
+    --bg:#eef2f7; --card:#fff; --text:#243447; --muted:#7b8ca1; --strong:#17365c;
+    --hero1:#1d4e89; --hero2:#2b6cb0; --border:#dce4ee; --line:#dce8f6;
+    --th:#1d4e89; --th-txt:#fff; --td-alt:#f6f9fd; --td-border:#d7e0ec;
+    --code-bg:#eef2f8; --code-fg:#a03060; --pre-bg:#1f2937; --pre-fg:#e8eef7;
+    --h2:#1d4e89; --h3:#215a9e; --tag-bg:#e3edf9; --tag-fg:#1d4e89; --tag-br:#c8dcf1;
+    --note:#eef5fd; --warn:#fff8e6; --tip:#ecf9f2; --pin:#f3effc;
+    --toc-bg:#f7faff; --toc-col:#fff; --link:#2b6cb0; --link-hover:#e3edf9;
+    --shadow:rgba(36,52,71,.08); --hero-shadow:rgba(29,78,137,.22);
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#111827; --card:#1b2433; --text:#dbe4f0; --muted:#93a5bd; --strong:#f0f5ff;
+    --hero1:#102a4c; --hero2:#1d4e89; --border:#2c3a4e; --line:#33465f;
+    --th:#22456f; --th-txt:#eaf2ff; --td-alt:#202c3e; --td-border:#33425a;
+    --code-bg:#2b3547; --code-fg:#f0a6c0; --pre-bg:#0d1420; --pre-fg:#dce8f7;
+    --h2:#8ab6f0; --h3:#9cc4f2; --tag-bg:#1c3350; --tag-fg:#bcd8ff; --tag-br:#33547d;
+    --note:#1c2b40; --warn:#3a2f18; --tip:#17342a; --pin:#2b2340;
+    --toc-bg:#1e2a3c; --toc-col:#222f43; --link:#8fc0ff; --link-hover:#2c3f59;
+    --shadow:rgba(0,0,0,.35); --hero-shadow:rgba(0,0,0,.4);
+  }
+  html { scroll-behavior:smooth; }
+  body { margin:0; padding:26px 16px 60px; background:var(--bg); color:var(--text);
+         font-family:"Segoe UI", Arial, sans-serif; line-height:1.55;
+         transition:background .25s, color .25s; }
   .wrap { max-width:960px; margin:0 auto; }
-  .crumb { font-size:12px; color:#7b8ca1; margin-bottom:14px; }
-  .crumb a { color:#2b6cb0; text-decoration:none; }
-  .crumb span { color:#9aa9ba; margin:0 7px; }
-  .hero { background:linear-gradient(120deg,#1d4e89,#2b6cb0); color:#fff; border-radius:12px;
-           padding:22px 26px; box-shadow:0 6px 20px rgba(29,78,137,.22); margin-bottom:18px; }
+  .crumb { font-size:12px; color:var(--muted); margin-bottom:14px; }
+  .crumb a { color:var(--link); text-decoration:none; }
+  .crumb span { color:var(--muted); margin:0 7px; opacity:.7; }
+  .hero { position:relative; background:linear-gradient(120deg,var(--hero1),var(--hero2)); color:#fff;
+          border-radius:12px; padding:22px 26px; box-shadow:0 6px 20px var(--hero-shadow); margin-bottom:18px; }
   .hero h1 { margin:6px 0 4px; font-size:26px; font-weight:700; }
   .hero p { margin:0; opacity:.9; font-size:13px; }
+  #themeToggle { position:fixed; top:18px; right:18px; z-index:99; cursor:pointer;
+        border:1px solid var(--tag-br); background:var(--card); color:var(--text);
+        border-radius:24px; padding:9px 15px; font:600 13px "Segoe UI", Arial, sans-serif;
+        box-shadow:0 3px 12px var(--shadow); transition:background .25s, color .25s, transform .15s; }
+  #themeToggle:hover { transform:translateY(-2px); }
+  #themeToggle:focus-visible { outline:3px solid #8fc0ff; outline-offset:2px; }
   .tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-  .tag { background:#e3edf9; color:#1d4e89; border:1px solid #c8dcf1; border-radius:20px;
-          padding:4px 12px; font-size:12px; font-weight:600; }
-  .card { background:#fff; border:1px solid #dce4ee; border-radius:12px; padding:26px 30px;
-           box-shadow:0 3px 14px rgba(36,52,71,.07); }
-  h2 { color:#1d4e89; font-size:21px; border-bottom:2px solid #dce8f6; padding-bottom:8px; margin:34px 0 16px; }
-  h3 { color:#215a9e; font-size:16px; margin:26px 0 10px; padding-left:10px; border-left:4px solid #4a90d9; }
+  .tag { background:var(--tag-bg); color:var(--tag-fg); border:1px solid var(--tag-br);
+         border-radius:20px; padding:4px 12px; font-size:12px; font-weight:600; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:26px 30px;
+          box-shadow:0 3px 14px var(--shadow); transition:background .25s, border-color .25s; }
+  h2 { color:var(--h2); font-size:21px; border-bottom:2px solid var(--line); padding-bottom:8px; margin:34px 0 16px; }
+  h3 { color:var(--h3); font-size:16px; margin:26px 0 10px; padding-left:10px; border-left:4px solid var(--h3); }
+  h2, h3 { scroll-margin-top:20px; }
   h1 { display:none; }
   p { margin:9px 0; }
-  strong { color:#17365c; }
+  strong { color:var(--strong); }
   ul, ol { margin:9px 0 14px; padding-left:24px; }
   li { margin:4px 0; }
+  a { color:var(--link); }
   table { border-collapse:collapse; width:100%; margin:14px 0 18px; font-size:13.5px; }
-  th { background:#1d4e89; color:#fff; text-align:left; padding:9px 11px; border:1px solid #1d4e89; }
-  td { padding:8px 11px; border:1px solid #d7e0ec; vertical-align:top; }
-  tr:nth-child(even) td { background:#f6f9fd; }
-  code { font-family:Consolas,"Courier New",monospace; background:#eef2f8; color:#a03060;
-          padding:1px 5px; border-radius:4px; font-size:12.5px; }
-  pre { background:#1f2937; color:#e8eef7; border-radius:8px; padding:14px 16px; overflow-x:auto;
-         font-family:Consolas,"Courier New",monospace; font-size:12.5px; line-height:1.5; }
+  th { background:var(--th); color:var(--th-txt); text-align:left; padding:9px 11px; border:1px solid var(--th); }
+  td { padding:8px 11px; border:1px solid var(--td-border); vertical-align:top; }
+  tr:nth-child(even) td { background:var(--td-alt); }
+  code { font-family:Consolas,"Courier New",monospace; background:var(--code-bg); color:var(--code-fg);
+         padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  pre { background:var(--pre-bg); color:var(--pre-fg); border-radius:8px; padding:14px 16px; overflow-x:auto;
+        font-family:Consolas,"Courier New",monospace; font-size:12.5px; line-height:1.5; }
   pre code { background:none; color:inherit; padding:0; font-size:inherit; }
-  blockquote { margin:14px 0; padding:11px 15px; border-left:4px solid #4a90d9; border-radius:0 8px 8px 0;
-                background:#eef5fd; font-size:14px; }
-  blockquote.warn { border-left-color:#e0a020; background:#fff8e6; }
-  blockquote.tip { border-left-color:#2f9e6f; background:#ecf9f2; }
-  blockquote.pin { border-left-color:#7b61c9; background:#f3effc; }
+  blockquote { margin:14px 0; padding:11px 15px; border-left:4px solid var(--h3);
+               border-radius:0 8px 8px 0; background:var(--note); font-size:14px; }
+  blockquote.warn { border-left-color:#e0a020; background:var(--warn); }
+  blockquote.tip { border-left-color:#2f9e6f; background:var(--tip); }
+  blockquote.pin { border-left-color:#7b61c9; background:var(--pin); }
   blockquote p { margin:3px 0; }
-  hr { border:0; border-top:1px solid #dce4ee; margin:28px 0; }
-  em { color:#5b6b7f; }
-  .foot { text-align:center; color:#8393a6; font-size:12px; margin-top:22px; }
-  @media print { body { background:#fff; padding:0; } .card, .hero { box-shadow:none; } }
-</style></head><body><div class="wrap">
-<div class="crumb"><a href="#">Дисциплины</a><span>›</span><a href="#">Основы информационных технологий</a><span>›</span><a href="#">Семинары 5–8</a><span>›</span>Теоретическая часть</div>
+  hr { border:0; border-top:1px solid var(--border); margin:28px 0; }
+  em { color:var(--muted); }
+  /* оглавление */
+  .toc { background:var(--toc-bg); border:1px solid var(--border); border-radius:12px;
+         padding:18px 20px 20px; margin-bottom:26px; }
+  .toc-head { display:flex; align-items:baseline; flex-wrap:wrap; gap:12px; }
+  .toc-head h2 { margin:0 0 6px; border:0; padding:0; font-size:19px; }
+  .toc-hint { font-size:12px; color:var(--muted); }
+  .toc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px; margin-top:8px; }
+  .toc-col { background:var(--toc-col); border:1px solid var(--border); border-radius:9px; padding:12px 14px; }
+  .toc-col h4 { margin:0 0 8px; font-size:13.5px; color:var(--h2); }
+  .toc-col h4 small { font-weight:400; color:var(--muted); font-size:11.5px; }
+  .toc-links { display:flex; flex-direction:column; gap:2px; }
+  .toc-links a { display:block; font-size:12.5px; text-decoration:none; color:var(--text);
+                 padding:3px 6px; border-radius:5px; }
+  .toc-links a b { color:var(--link); margin-right:5px; font-variant-numeric:tabular-nums; }
+  .toc-links a:hover, .toc-links a:focus-visible { background:var(--link-hover); color:var(--link); outline:none; }
+  .toc-extra h4 { margin-bottom:8px; }
+  .foot { text-align:center; color:var(--muted); font-size:12px; margin-top:22px; }
+  .foot a { text-decoration:none; }
+  @media (max-width:600px) { #themeToggle { top:10px; right:10px; padding:7px 11px; font-size:12px; } .card { padding:18px 16px; } }
+  @media print { body { background:#fff; padding:0; } .card,.hero { box-shadow:none; }
+                 #themeToggle,.toc-hint { display:none; } html { scroll-behavior:auto; } }
+</style></head><body>
+<button id="themeToggle" type="button" aria-pressed="false">🌙 Тёмная тема</button>
+<div class="wrap">
+<div class="crumb"><a href="#top">Дисциплины</a><span>›</span><a href="#top">Основы информационных технологий</a><span>›</span><a href="#toc">Семинары 5–8</a><span>›</span><a href="#sec1">Теоретическая часть</a></div>
 <div class="hero"><h1>Контрольная точка 2 — Теоретическая часть</h1>
 <p>Основы информационных технологий · 1 семестр · Семинары 5–8 · краткая выжимка</p></div>
-<div class="tags"><span class="tag">📘 Теория</span><span class="tag">🧩 30 пунктов</span><span class="tag">💻 Примеры кода</span><span class="tag">📋 Таблицы</span><span class="tag">🎓 КТ2</span></div>
+<div class="tags"><span class="tag">📘 Теория</span><span class="tag">🧩 30 пунктов</span><span class="tag">💻 Примеры кода</span><span class="tag">📋 Таблицы</span><span class="tag">🌗 Тёмная тема</span><span class="tag">🎓 КТ2</span></div>
 <div class="card">
-<h1>Контрольная точка 2 — Теоретическая часть</h1>
+<nav class="toc" id="toc"><div class="toc-head"><h2 id="sec-toc">Содержание</h2><span class="toc-hint">нажмите на пункт — перейдёте к разделу</span></div><div class="toc-grid">
+<div class="toc-col"><h4>📁 Файловая система <small>2.1–2.6</small></h4><div class="toc-links">
+<a href="#s1"><b>2.1</b> Что такое файловая система?</a>
+<a href="#s2"><b>2.2</b> Основные файловые системы</a>
+<a href="#s3"><b>2.3</b> Имена файлов и расширения</a>
+<a href="#s4"><b>2.4</b> Атрибуты файлов</a>
+<a href="#s5"><b>2.5</b> Операции с файлами и папками</a>
+<a href="#s6"><b>2.6</b> Поиск и сортировка файлов</a>
+</div></div>
+<div class="toc-col"><h4>⌨️ Командная строка <small>2.7–2.12</small></h4><div class="toc-links">
+<a href="#s7"><b>2.7</b> Что такое командная строка?</a>
+<a href="#s8"><b>2.8</b> Навигация и операции с файлами в консоли</a>
+<a href="#s9"><b>2.9</b> Сетевые команды</a>
+<a href="#s10"><b>2.10</b> Управление процессами</a>
+<a href="#s11"><b>2.11</b> Конвейеры и перенаправление ввода-вывода</a>
+<a href="#s12"><b>2.12</b> Фильтрация и поиск данных</a>
+</div></div>
+<div class="toc-col"><h4>🗄️ MySQL <small>2.13–2.20</small></h4><div class="toc-links">
+<a href="#s13"><b>2.13</b> OpenServer и MySQL</a>
+<a href="#s14"><b>2.14</b> Основные типы данных MySQL</a>
+<a href="#s15"><b>2.15</b> Ограничения целостности MySQL</a>
+<a href="#s16"><b>2.16</b> Синтаксис CREATE TABLE</a>
+<a href="#s17"><b>2.17</b> Синтаксис INSERT, UPDATE, DELETE</a>
+<a href="#s18"><b>2.18</b> Транзакции в MySQL</a>
+<a href="#s19"><b>2.19</b> Индексы в MySQL</a>
+<a href="#s20"><b>2.20</b> Полезные команды MySQL</a>
+</div></div>
+<div class="toc-col"><h4>🧩 ER-моделирование <small>2.21–2.28</small></h4><div class="toc-links">
+<a href="#s21"><b>2.21</b> Этапы проектирования базы данных</a>
+<a href="#s22"><b>2.22</b> Основные понятия ER-моделирования</a>
+<a href="#s23"><b>2.23</b> Типы атрибутов</a>
+<a href="#s24"><b>2.24</b> Типы связей</a>
+<a href="#s25"><b>2.25</b> Нотации ER-диаграмм</a>
+<a href="#s26"><b>2.26</b> Нормализация базы данных</a>
+<a href="#s27"><b>2.27</b> Преобразование ER-модели в реляционную схему</a>
+<a href="#s28"><b>2.28</b> Инструменты проектирования</a>
+</div></div>
+<div class="toc-col"><h4>➕ Мелочи и запас <small>2.29–2.30</small></h4><div class="toc-links">
+<a href="#s29"><b>2.29</b> Мелочи, которые часто спрашивают</a>
+<a href="#s30"><b>2.30</b> Сетевые протоколы (семинар 9 — про запас)</a>
+</div></div>
+<div class="toc-col toc-extra"><h4>💻 Примеры</h4><div class="toc-links"><a href="#sec-examples"><b>3.</b> Примеры решения заданий</a><a href="#sec-toc"><b>↑</b> К содержанию</a></div></div>
+</div></nav>
+<h1 id="top">Контрольная точка 2 — Теоретическая часть</h1>
 <p><strong>Основы информационных технологий</strong> · 1 семестр · Семинары 5–8</p>
 <blockquote class="note tip">
 <p>💡 <strong>Как пользоваться:</strong> короткая выжимка теории в том же виде, что на страницах семинаров. Формулировки оставлены как в источнике — что не поймёшь, переноси в шпаргалку прямо как есть.</p>
 </blockquote>
-<p><strong>На страничке:</strong></p>
-<ul>
-<li>📁 <strong>2.1–2.6</strong> — файловая система: понятия, ФС, расширения, атрибуты, операции, поиск</li>
-<li>⌨️ <strong>2.7–2.12</strong> — командная строка: оболочки, навигация, сеть, процессы, конвейеры, фильтры</li>
-<li>🗄️ <strong>2.13–2.20</strong> — MySQL: типы данных, ограничения, SQL, транзакции, индексы</li>
-<li>🧩 <strong>2.21–2.30</strong> — ER-моделирование: сущности, связи, нотации, нормализация, мелочи, сети</li>
-<li>💻 <strong>3. Примеры решения заданий</strong> — готовый SQL и команды</li>
-</ul>
 <hr />
-<h2>2. Теоретическая часть</h2>
-<h3>2.1. Что такое файловая система?</h3>
+<h2 id="sec1">2. Теоретическая часть</h2>
+<h3 id="s1">2.1. Что такое файловая система?</h3>
 <p><strong>Файловая система</strong> — это порядок, определяющий способ организации, хранения и именования данных на носителях информации. Она определяет, как данные будут храниться на диске, как к ним будет осуществляться доступ и как они будут структурированы.</p>
 <p><strong>Ключевые понятия:</strong></p>
 <ul>
@@ -94,7 +181,7 @@
 <blockquote class="note warn">
 <p>⚠️ <strong>Важно:</strong> Каждый файл и папка имеют уникальное полное имя (путь), которое однозначно определяет их местоположение в файловой системе.</p>
 </blockquote>
-<h3>2.2. Основные файловые системы</h3>
+<h3 id="s2">2.2. Основные файловые системы</h3>
 <table>
 <thead>
 <tr>
@@ -131,7 +218,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.3. Имена файлов и расширения</h3>
+<h3 id="s3">2.3. Имена файлов и расширения</h3>
 <p>Имя файла состоит из двух частей: <strong>имени</strong> и <strong>расширения</strong>, разделённых точкой.</p>
 <pre><code class="language-text">document.docx
 │        │
@@ -200,7 +287,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.4. Атрибуты файлов</h3>
+<h3 id="s4">2.4. Атрибуты файлов</h3>
 <p><strong>Атрибуты файла</strong> — это дополнительные параметры, определяющие свойства файла и права доступа к нему.</p>
 <ul>
 <li>📖 <strong>Только чтение (Read-only)</strong> — файл можно открыть и прочитать, но нельзя изменить или удалить.</li>
@@ -208,7 +295,7 @@
 <li>⚙️ <strong>Системный (System)</strong> — файл используется операционной системой. Не рекомендуется изменять.</li>
 <li>📦 <strong>Архивный (Archive)</strong> — файл был изменён с момента последнего резервного копирования.</li>
 </ul>
-<h3>2.5. Операции с файлами и папками</h3>
+<h3 id="s5">2.5. Операции с файлами и папками</h3>
 <table>
 <thead>
 <tr>
@@ -255,7 +342,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.6. Поиск и сортировка файлов</h3>
+<h3 id="s6">2.6. Поиск и сортировка файлов</h3>
 <p><strong>Поиск файлов</strong></p>
 <ul>
 <li>По имени файла</li>
@@ -275,7 +362,7 @@
 <blockquote class="note tip">
 <p>💡 <strong>Совет:</strong> Используйте маски поиска для более точного поиска: <code>*</code> — любое количество символов (например, <code>*.txt</code> — все текстовые файлы), <code>?</code> — один любой символ (например, <code>file?.docx</code> — file1.docx, file2.docx).</p>
 </blockquote>
-<h3>2.7. Что такое командная строка?</h3>
+<h3 id="s7">2.7. Что такое командная строка?</h3>
 <p><strong>Командная строка (Command Line Interface, CLI)</strong> — интерфейс, в котором пользователь взаимодействует с компьютером путём ввода текстовых команд.</p>
 <p><strong>Преимущества командной строки:</strong></p>
 <ul>
@@ -322,7 +409,7 @@
 <li><strong>Ключи (флаги)</strong> — уточняют поведение команды (обычно начинаются с <code>/</code> или <code>-</code>).</li>
 <li><strong>Аргументы</strong> — данные, над которыми выполняется операция (файлы, папки, адреса).</li>
 </ul>
-<h3>2.8. Навигация и операции с файлами в консоли</h3>
+<h3 id="s8">2.8. Навигация и операции с файлами в консоли</h3>
 <p><strong>Навигация по файловой системе</strong></p>
 <table>
 <thead>
@@ -422,7 +509,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.9. Сетевые команды</h3>
+<h3 id="s9">2.9. Сетевые команды</h3>
 <table>
 <thead>
 <tr>
@@ -469,7 +556,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.10. Управление процессами</h3>
+<h3 id="s10">2.10. Управление процессами</h3>
 <table>
 <thead>
 <tr>
@@ -501,7 +588,7 @@
 </tr>
 </tbody>
 </table>
-<h3>2.11. Конвейеры и перенаправление ввода-вывода</h3>
+<h3 id="s11">2.11. Конвейеры и перенаправление ввода-вывода</h3>
 <p><strong>Конвейер (pipe)</strong> — оператор <code>|</code>, передающий вывод одной команды на вход другой.</p>
 <p><strong>Перенаправление вывода:</strong></p>
 <ul>
@@ -516,7 +603,7 @@ tasklist | findstr &quot;chrome&quot;    — найти процессы Chrome
 dir &gt; files.txt                — сохранить список файлов в файл
 ping google.com &gt;&gt; log.txt     — добавить результат пинга в лог
 </code></pre>
-<h3>2.12. Фильтрация и поиск данных</h3>
+<h3 id="s12">2.12. Фильтрация и поиск данных</h3>
 <table>
 <thead>
 <tr>
@@ -563,7 +650,7 @@ for %%f in (*.txt) do (
 echo === Backup finished === &gt;&gt; backup.log
 type backup.log
 </code></pre>
-<h3>2.13. OpenServer и MySQL</h3>
+<h3 id="s13">2.13. OpenServer и MySQL</h3>
 <p><strong>OpenServer</strong> — это портативная серверная платформа для Windows, включающая Apache, Nginx, MySQL, PHP и другие компоненты.</p>
 <p><strong>Компоненты OpenServer:</strong></p>
 <ul>
@@ -585,7 +672,7 @@ type backup.log
 <li>Восстановление после сбоев</li>
 </ul>
 <p><strong>БД</strong> — база данных. <strong>СУБД</strong> — система управления базами данных. <strong>ER</strong> — сущность-связь.</p>
-<h3>2.14. Основные типы данных MySQL</h3>
+<h3 id="s14">2.14. Основные типы данных MySQL</h3>
 <table>
 <thead>
 <tr>
@@ -685,7 +772,7 @@ type backup.log
 <blockquote class="note pin">
 <p>📌 <strong>Из банка КТ2:</strong> дробные числа — <code>DECIMAL</code>, большие тексты — <code>TEXT</code>, большие двоичные данные — <code>BLOB</code>, год — <code>YEAR</code>, дата и время — <code>DATETIME</code>, перечисление — <code>ENUM</code>.</p>
 </blockquote>
-<h3>2.15. Ограничения целостности MySQL</h3>
+<h3 id="s15">2.15. Ограничения целостности MySQL</h3>
 <p><strong>Ограничения целостности</strong> — это правила, которые гарантируют корректность данных в таблице.</p>
 <table>
 <thead>
@@ -732,7 +819,7 @@ type backup.log
 <blockquote class="note warn">
 <p>⚠️ <strong>Важно:</strong> При попытке вставить запись с несуществующим внешним ключом запрос завершится ошибкой.</p>
 </blockquote>
-<h3>2.16. Синтаксис CREATE TABLE</h3>
+<h3 id="s16">2.16. Синтаксис CREATE TABLE</h3>
 <pre><code class="language-sql">CREATE TABLE имя_таблицы (
     столбец1 тип [ограничения],
     столбец2 тип [ограничения],
@@ -753,7 +840,7 @@ type backup.log
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 </code></pre>
-<h3>2.17. Синтаксис INSERT, UPDATE, DELETE</h3>
+<h3 id="s17">2.17. Синтаксис INSERT, UPDATE, DELETE</h3>
 <pre><code class="language-sql">-- Вставка данных
 INSERT INTO имя_таблицы (столбец1, столбец2, ...)
 VALUES (значение1, значение2, ...);
@@ -770,7 +857,7 @@ WHERE условие;
 <blockquote class="note warn">
 <p>⚠️ <strong>Важно:</strong> <code>UPDATE</code> и <code>DELETE</code> без <code>WHERE</code> затрагивают все строки таблицы.</p>
 </blockquote>
-<h3>2.18. Транзакции в MySQL</h3>
+<h3 id="s18">2.18. Транзакции в MySQL</h3>
 <p><strong>Транзакция</strong> — это последовательность операций, которая выполняется как единое целое. Либо все операции выполняются успешно, либо ни одна из них.</p>
 <pre><code class="language-sql">START TRANSACTION;
     -- операции
@@ -786,7 +873,7 @@ ROLLBACK;  -- откатить транзакцию
 <li><strong>Durability (Долговечность)</strong> — после <code>COMMIT</code> изменения сохраняются</li>
 </ul>
 <p><code>COMMIT</code> — фиксирует изменения. <code>ROLLBACK</code> — откатывает изменения.</p>
-<h3>2.19. Индексы в MySQL</h3>
+<h3 id="s19">2.19. Индексы в MySQL</h3>
 <p><strong>Индекс</strong> — это структура данных, которая ускоряет поиск и сортировку записей в таблице.</p>
 <p><strong>Типы индексов</strong></p>
 <ul>
@@ -799,7 +886,7 @@ ROLLBACK;  -- откатить транзакцию
 <pre><code class="language-sql">CREATE INDEX idx_name ON table_name (column_name);
 DROP INDEX idx_name ON table_name;
 </code></pre>
-<h3>2.20. Полезные команды MySQL</h3>
+<h3 id="s20">2.20. Полезные команды MySQL</h3>
 <table>
 <thead>
 <tr>
@@ -838,7 +925,7 @@ DROP INDEX idx_name ON table_name;
 </tr>
 </tbody>
 </table>
-<h3>2.21. Этапы проектирования базы данных</h3>
+<h3 id="s21">2.21. Этапы проектирования базы данных</h3>
 <p><strong>Проектирование базы данных</strong> — это последовательный процесс перехода от неформального описания предметной области к формализованной схеме базы данных.</p>
 <ol>
 <li><strong>Системный анализ предметной области</strong> — подробное словесное описание объектов и связей между ними. Определение границ предметной области.</li>
@@ -846,7 +933,7 @@ DROP INDEX idx_name ON table_name;
 <li><strong>Даталогическое проектирование</strong> — преобразование ER-модели в реляционную схему: таблицы, поля, ключи, связи.</li>
 <li><strong>Физическое проектирование</strong> — реализация базы данных в конкретной СУБД (MySQL, PostgreSQL). Настройка индексов, типов данных.</li>
 </ol>
-<h3>2.22. Основные понятия ER-моделирования</h3>
+<h3 id="s22">2.22. Основные понятия ER-моделирования</h3>
 <ul>
 <li><strong>Сущность (Entity)</strong> — любой различимый объект предметной области, информацию о котором необходимо хранить в БД. <em>Примеры:</em> Студент, Книга, Заказ, Товар.</li>
 <li><strong>Атрибут (Attribute)</strong> — поименованная характеристика сущности, описывающая её свойство. <em>Примеры:</em> ФИО, дата рождения, цена.</li>
@@ -854,7 +941,7 @@ DROP INDEX idx_name ON table_name;
 <li><strong>Связь (Relationship)</strong> — ассоциация между двумя или более сущностями. <em>Пример:</em> Студент учится в Группе.</li>
 </ul>
 <p><strong>Отношение в реляционной БД</strong> — таблица.</p>
-<h3>2.23. Типы атрибутов</h3>
+<h3 id="s23">2.23. Типы атрибутов</h3>
 <table>
 <thead>
 <tr>
@@ -901,13 +988,13 @@ DROP INDEX idx_name ON table_name;
 </tr>
 </tbody>
 </table>
-<h3>2.24. Типы связей</h3>
+<h3 id="s24">2.24. Типы связей</h3>
 <ul>
 <li><strong>Один к одному (1:1)</strong> — каждому экземпляру сущности А соответствует ровно один экземпляр сущности В, и наоборот. <em>Пример:</em> Студент — Зачётная книжка. <strong>Реализация:</strong> внешний ключ в одной из таблиц с ограничением <code>UNIQUE</code>.</li>
 <li><strong>Один ко многим (1:N)</strong> — одному экземпляру сущности А соответствует 0, 1 или несколько экземпляров сущности В. <em>Пример:</em> Группа — Студенты. <strong>Реализация:</strong> внешний ключ в таблице «многие».</li>
 <li><strong>Многие ко многим (N:M)</strong> — одному экземпляру сущности А соответствует несколько экземпляров сущности В, и наоборот. <em>Пример:</em> Студенты — Дисциплины. <strong>Реализация:</strong> промежуточная (связующая) таблица с двумя внешними ключами — всего <strong>три таблицы</strong>.</li>
 </ul>
-<h3>2.25. Нотации ER-диаграмм</h3>
+<h3 id="s25">2.25. Нотации ER-диаграмм</h3>
 <p><strong>Нотация Чена (Chen)</strong> — классическая нотация, удобна для концептуального моделирования:</p>
 <ul>
 <li>Прямоугольник — сущность</li>
@@ -924,7 +1011,7 @@ DROP INDEX idx_name ON table_name;
 <li>Поперечная черта — сторона «один»</li>
 <li>Кружок — необязательность (0)</li>
 </ul>
-<h3>2.26. Нормализация базы данных</h3>
+<h3 id="s26">2.26. Нормализация базы данных</h3>
 <p><strong>Нормализация</strong> — это процесс приведения структуры базы данных к нормальным формам с целью устранения избыточности и аномалий.</p>
 <ul>
 <li><strong>1НФ (Первая нормальная форма)</strong><ul>
@@ -948,7 +1035,7 @@ DROP INDEX idx_name ON table_name;
 </li>
 </ul>
 <p><strong>Транзитивная зависимость</strong> — неключевой атрибут зависит от другого неключевого атрибута, а не напрямую от ключа (<code>group_name → speciality_name → faculty_name</code>).</p>
-<h3>2.27. Преобразование ER-модели в реляционную схему</h3>
+<h3 id="s27">2.27. Преобразование ER-модели в реляционную схему</h3>
 <p><strong>Правила преобразования:</strong></p>
 <ul>
 <li>Каждая сущность → таблица</li>
@@ -960,7 +1047,7 @@ DROP INDEX idx_name ON table_name;
 <li>Связь N:M → промежуточная таблица с двумя внешними ключами</li>
 <li>Многозначный атрибут → отдельная таблица</li>
 </ul>
-<h3>2.28. Инструменты проектирования</h3>
+<h3 id="s28">2.28. Инструменты проектирования</h3>
 <table>
 <thead>
 <tr>
@@ -1002,7 +1089,7 @@ DROP INDEX idx_name ON table_name;
 </tr>
 </tbody>
 </table>
-<h3>2.29. Мелочи, которые часто спрашивают</h3>
+<h3 id="s29">2.29. Мелочи, которые часто спрашивают</h3>
 <ul>
 <li><code>1 байт = 8 бит</code> · <code>1 Кбайт = 1024 байта</code> · <code>2 Кбайта = 2048 байт</code> · <code>2 байта = 16 бит</code></li>
 <li>Копирование оставляет исходник, перемещение — удаляет; файл, удалённый из корзины, удаляется безвозвратно.</li>
@@ -1011,7 +1098,7 @@ DROP INDEX idx_name ON table_name;
 <li><code>del</code> удаляет файл, <code>rmdir</code> — папку (CMD); <code>rm</code> — файл (Linux).</li>
 <li><code>UNIQUE</code> гарантирует уникальность, <code>PRIMARY KEY</code> может быть составным, <code>AUTO_INCREMENT</code> автоматически увеличивает значение.</li>
 </ul>
-<h3>2.30. Сетевые протоколы (семинар 9 — про запас)</h3>
+<h3 id="s30">2.30. Сетевые протоколы (семинар 9 — про запас)</h3>
 <blockquote class="note pin">
 <p>📌 В вариантах КТ2 вопросов по сетям нет; блок можно вырезать.</p>
 </blockquote>
@@ -1027,7 +1114,7 @@ DROP INDEX idx_name ON table_name;
 <li><strong>Аномалии:</strong> <code>TCP Retransmission</code>, <code>TCP Dup ACK</code>, <code>TCP ZeroWindow</code>, <code>Out-of-Order</code>, <code>RST</code>.</li>
 </ul>
 <hr />
-<h2>3. Примеры решения заданий</h2>
+<h2 id="sec-examples">3. Примеры решения заданий</h2>
 <p><strong>Задание. Создайте базу данных и таблицу студентов с ограничениями.</strong></p>
 <pre><code class="language-sql">CREATE DATABASE university CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE university;
@@ -1121,5 +1208,32 @@ GROUP BY d.discipline_id;
 <p><em>Материал подготовлен для студентов направлений 09.03.02 «Информационные системы и технологии» и 09.03.01 «Информатика и вычислительная техника» · © Кафедра информационных технологий, 2026</em></p>
 
 </div>
-<div class="foot">Материал подготовлен для студентов направлений 09.03.02 и 09.03.01 · © Кафедра информационных технологий, 2026</div>
-</div></body></html>
+<div class="foot"><a href="#top">↑ Наверх</a> · Материал подготовлен для студентов направлений 09.03.02 и 09.03.01 · © Кафедра информационных технологий, 2026</div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var KEY = 'kt2-theory-theme';
+  function apply(t) {
+    root.setAttribute('data-theme', t);
+    btn.textContent = (t === 'dark') ? '☀️ Светлая тема' : '🌙 Тёмная тема';
+    btn.setAttribute('aria-pressed', String(t === 'dark'));
+    btn.setAttribute('aria-label', (t === 'dark') ? 'Включить светлую тему' : 'Включить тёмную тему');
+    try { localStorage.setItem(KEY, t); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (!saved) {
+    try { saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    catch (e) { saved = 'light'; }
+  }
+  apply(saved === 'dark' ? 'dark' : 'light');
+  btn.addEventListener('click', function () {
+    apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+})();
+</script>
+
+</body></html>
