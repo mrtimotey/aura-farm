@@ -93,6 +93,48 @@
   .foot { text-align:center; color:var(--muted); font-size:12px; margin-top:22px; }
   .foot a { text-decoration:none; }
   @media (max-width:600px) { #themeToggle { top:10px; right:10px; padding:7px 11px; font-size:12px; } .card { padding:18px 16px; } }
+
+  /* генератор вариантов */
+  .gen h2 { margin-top:38px; }
+  .gen-lead { font-size:14px; color:var(--muted); }
+  .gen-controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+        background:var(--toc-bg); border:1px solid var(--border); border-radius:10px;
+        padding:12px 14px; margin:14px 0 8px; }
+  .gen-controls button { cursor:pointer; border:1px solid var(--tag-br); background:var(--card);
+        color:var(--text); border-radius:8px; padding:8px 14px; font:600 13px "Segoe UI",Arial,sans-serif; }
+  .gen-controls button:hover { background:var(--link-hover); color:var(--link); }
+  .gen-controls label { font-size:13px; display:flex; align-items:center; gap:6px; }
+  .gen-controls select { border:1px solid var(--tag-br); background:var(--card); color:var(--text);
+        border-radius:6px; padding:5px 8px; font-size:13px; }
+  .gen-stat { font-size:12px; color:var(--muted); margin:4px 0 12px; font-variant-numeric:tabular-nums; }
+  .var-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:14px; }
+  .var-card { background:var(--toc-col); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .var-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  .var-head h3 { margin:0; border:0; padding:0; font-size:16px; color:var(--h2); }
+  .var-meta { font-size:11.5px; color:var(--muted); }
+  .var-btns { display:flex; gap:8px; margin:9px 0 4px; }
+  .var-btns button { cursor:pointer; border:1px solid var(--tag-br); background:var(--card); color:var(--link);
+        border-radius:6px; padding:4px 9px; font-size:11.5px; }
+  .var-btns button:hover { background:var(--link-hover); }
+  .var-list { list-style:none; counter-reset:qq; padding:0; margin:0; }
+  .var-list li { counter-increment:qq; padding:7px 0; border-bottom:1px dashed var(--border); margin:0; }
+  .var-list li:last-child { border-bottom:0; }
+  .qrow { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+  .qnum { color:var(--link); font-weight:700; font-size:12.5px; min-width:20px; }
+  .qnum::before { content:counter(qq) "."; }
+  .qtext { flex:1 1 220px; font-size:13px; }
+  .badge { font-size:10px; font-weight:600; padding:2px 7px; border-radius:12px; white-space:nowrap;
+           border:1px solid var(--tag-br); }
+  .b-kt { background:var(--tag-bg); color:var(--tag-fg); }
+  .b-def { background:var(--tip); color:var(--text); }
+  .b-new { background:var(--warn); color:var(--text); }
+  .b-net { background:var(--pin); color:var(--text); }
+  details.ans { margin-top:4px; font-size:12.5px; }
+  details.ans summary { cursor:pointer; color:var(--link); }
+  details.ans summary:hover { text-decoration:underline; }
+  .ansbody { background:var(--toc-bg); border-left:3px solid var(--h3); border-radius:0 6px 6px 0;
+             padding:8px 10px; margin-top:6px; }
+  .ansbody pre { margin:0; font-size:12px; }
   @media print { body { background:#fff; padding:0; } .card,.hero { box-shadow:none; }
                  #themeToggle,.toc-hint { display:none; } html { scroll-behavior:auto; } }
 </style></head><body>
@@ -101,7 +143,7 @@
 <div class="crumb"><a href="#top">Дисциплины</a><span>›</span><a href="#top">Основы информационных технологий</a><span>›</span><a href="#toc">Семинары 5–8</a><span>›</span><a href="#sec1">Теоретическая часть</a></div>
 <div class="hero"><h1>Контрольная точка 2 — Теоретическая часть</h1>
 <p>Основы информационных технологий · 1 семестр · Семинары 5–8 · краткая выжимка</p></div>
-<div class="tags"><span class="tag">📘 Теория</span><span class="tag">🧩 30 пунктов</span><span class="tag">💻 Примеры кода</span><span class="tag">📋 Таблицы</span><span class="tag">🌗 Тёмная тема</span><span class="tag">🎓 КТ2</span></div>
+<div class="tags"><span class="tag">📘 Теория</span><span class="tag">🧩 30 пунктов</span><span class="tag">💻 Примеры кода</span><span class="tag">📋 Таблицы</span><span class="tag">🌗 Тёмная тема</span><span class="tag">🎲 Генератор вариантов</span><span class="tag">🎓 КТ2</span></div>
 <div class="card">
 <nav class="toc" id="toc"><div class="toc-head"><h2 id="sec-toc">Содержание</h2><span class="toc-hint">нажмите на пункт — перейдёте к разделу</span></div><div class="toc-grid">
 <div class="toc-col"><h4>📁 Файловая система <small>2.1–2.6</small></h4><div class="toc-links">
@@ -144,7 +186,7 @@
 <a href="#s29"><b>2.29</b> Мелочи, которые часто спрашивают</a>
 <a href="#s30"><b>2.30</b> Сетевые протоколы (семинар 9 — про запас)</a>
 </div></div>
-<div class="toc-col toc-extra"><h4>💻 Примеры</h4><div class="toc-links"><a href="#sec-examples"><b>3.</b> Примеры решения заданий</a><a href="#sec-toc"><b>↑</b> К содержанию</a></div></div>
+<div class="toc-col toc-extra"><h4>💻 Практика</h4><div class="toc-links"><a href="#sec-examples"><b>3.</b> Примеры решения заданий</a><a href="#sec-variants"><b>4.</b> Случайные варианты КТ 🎲</a><a href="#sec-toc"><b>↑</b> К содержанию</a></div></div>
 </div></nav>
 <h1 id="top">Контрольная точка 2 — Теоретическая часть</h1>
 <p><strong>Основы информационных технологий</strong> · 1 семестр · Семинары 5–8</p>
@@ -1130,9 +1172,9 @@ CREATE TABLE students (
 
 INSERT INTO students (full_name, email, birth_date, gpa)
 VALUES
-    ('Иванов Иван Иванович', 'ivanov@example.com', '2005-03-15', 4.5),
-    ('Петрова Анна Сергеевна', 'petrova@example.com', '2004-11-22', 4.8),
-    ('Сидоров Пётр Алексеевич', 'sidorov@example.com', '2005-07-08', 3.9);
+    ('Иванов Иван Иванович', '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="016877606f6e77416479606c716d642f626e6c">[email&#160;protected]</a>', '2005-03-15', 4.5),
+    ('Петрова Анна Сергеевна', '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8fffeafbfde0f9eecfeaf7eee2ffe3eaa1ece0e2">[email&#160;protected]</a>', '2004-11-22', 4.8),
+    ('Сидоров Пётр Алексеевич', '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e7948e8388958891a7829f868a978b82c984888a">[email&#160;protected]</a>', '2005-07-08', 3.9);
 
 SELECT * FROM students;
 </code></pre>
@@ -1154,7 +1196,7 @@ CREATE TABLE students_with_group (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 </code></pre>
 <p><strong>Задание. Обновите данные, удалите запись, создайте индекс.</strong></p>
-<pre><code class="language-sql">UPDATE students SET gpa = 4.7 WHERE email = 'ivanov@example.com';
+<pre><code class="language-sql">UPDATE students SET gpa = 4.7 WHERE email = '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="325b44535c5d4472574a535f425e571c515d5f">[email&#160;protected]</a>';
 DELETE FROM students WHERE id = 3;
 CREATE INDEX idx_email ON students(email);
 SHOW INDEX FROM students;
@@ -1207,11 +1249,24 @@ GROUP BY d.discipline_id;
 <hr />
 <p><em>Материал подготовлен для студентов направлений 09.03.02 «Информационные системы и технологии» и 09.03.01 «Информатика и вычислительная техника» · © Кафедра информационных технологий, 2026</em></p>
 
+
+<section class="gen">
+<h2 id="sec-variants">4. Случайные варианты КТ</h2>
+<p class="gen-lead">Генератор берёт вопросы из банка (результаты КТ2 вариантов 6 и 3 + вопросы для защиты семинаров 5–8), добавляет программно собранные новые вопросы и каждый раз собирает свежие варианты: 20 коротких вопросов и 2 SQL-задачи, как в настоящей КТ. Порядок и набор меняются при каждой загрузке страницы и по кнопке.</p>
+<div class="gen-controls">
+  <button id="shuffleBtn" type="button">🔀 Перемешать заново</button>
+  <label>Вариантов: <select id="varCount"><option>4</option><option selected>6</option><option>8</option><option>10</option></select></label>
+  <label><input type="checkbox" id="netOn"> + семинар 9 (сети, 15 вопросов)</label>
+</div>
+<p class="gen-stat" id="genStat">Генерация…</p>
+<div class="var-grid" id="variantsBox"></div>
+</section>
+
 </div>
 <div class="foot"><a href="#top">↑ Наверх</a> · Материал подготовлен для студентов направлений 09.03.02 и 09.03.01 · © Кафедра информационных технологий, 2026</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('themeToggle');
@@ -1236,4 +1291,229 @@ GROUP BY d.discipline_id;
 })();
 </script>
 
-</body></html>
+
+<script id="kt2-gen">
+(function () {
+  'use strict';
+  var BANK = [{"q": "Что произойдёт при удалении папки с файлами?", "a": "Удалятся и папка, и все файлы внутри неё", "cat": "fs", "src": "КТ2 · В6-1"}, {"q": "Что произойдёт при удалении файла из корзины?", "a": "Файл удаляется безвозвратно (окончательно)", "cat": "fs", "src": "КТ2 · В3-1"}, {"q": "Какой атрибут файла делает его частью ОС?", "a": "системный", "cat": "fs", "src": "КТ2 · В6-16"}, {"q": "Сколько байт в 2 Кбайтах?", "a": "2048", "cat": "fs", "src": "КТ2 · В6-11"}, {"q": "Сколько бит в 2 байтах?", "a": "16", "cat": "fs", "src": "КТ2 · В3-11"}, {"q": "Какая команда Linux показывает список файлов с деталями?", "a": "ls -l (ls -la — с деталями и скрытыми)", "cat": "cli", "src": "КТ2 · В6-2"}, {"q": "Какая команда Linux удаляет файл?", "a": "rm", "cat": "cli", "src": "КТ2 · В6-9"}, {"q": "Какая команда Linux создаёт пустой файл?", "a": "touch", "cat": "cli", "src": "КТ2 · В6-15"}, {"q": "Какая команда Linux создаёт директорию?", "a": "mkdir", "cat": "cli", "src": "КТ2 · В3-2"}, {"q": "Какая команда Linux перемещает файл?", "a": "mv", "cat": "cli", "src": "КТ2 · В3-10"}, {"q": "Какая команда Linux копирует файл?", "a": "cp", "cat": "cli", "src": "КТ2 · В3-15"}, {"q": "Какая команда Windows CMD удаляет папку?", "a": "rmdir", "cat": "cli", "src": "КТ2 · В6-12"}, {"q": "Какая команда Windows CMD показывает сетевые соединения?", "a": "netstat", "cat": "cli", "src": "КТ2 · В6-18"}, {"q": "Какая команда Windows CMD удаляет файл?", "a": "del", "cat": "cli", "src": "КТ2 · В3-12"}, {"q": "Какая команда Windows CMD показывает список процессов?", "a": "tasklist", "cat": "cli", "src": "КТ2 · В3-18"}, {"q": "Какой тип данных MySQL используется для дробных чисел?", "a": "DECIMAL", "cat": "sql", "src": "КТ2 · В6-3"}, {"q": "Какой тип данных MySQL используется для года?", "a": "year", "cat": "sql", "src": "КТ2 · В6-13"}, {"q": "Какой тип данных MySQL используется для больших двоичных данных?", "a": "blob", "cat": "sql", "src": "КТ2 · В6-19"}, {"q": "Какой тип данных MySQL используется для больших текстов?", "a": "TEXT", "cat": "sql", "src": "КТ2 · В3-3"}, {"q": "Какой тип данных MySQL используется для даты и времени?", "a": "datetime", "cat": "sql", "src": "КТ2 · В3-13"}, {"q": "Какой тип данных MySQL используется для перечисления?", "a": "enum", "cat": "sql", "src": "КТ2 · В3-19"}, {"q": "Что произойдёт при попытке вставить запись с несуществующим внешним ключом?", "a": "Запрос завершится ошибкой", "cat": "sql", "src": "КТ2 · В6-4"}, {"q": "Какое ограничение гарантирует уникальность?", "a": "unique", "cat": "sql", "src": "КТ2 · В6-17"}, {"q": "Какое ограничение может быть составным?", "a": "primary key", "cat": "sql", "src": "КТ2 · В3-17"}, {"q": "Что такое AUTO_INCREMENT в MySQL?", "a": "Автоматическое увеличение числового значения поля при INSERT (обычно PK)", "cat": "sql", "src": "КТ2 · В3-4"}, {"q": "Что такое изоляция транзакции?", "a": "Параллельные не влияют (дословно со страницы; по семинару: параллельные транзакции не влияют друг на друга)", "cat": "sql", "src": "КТ2 · В6-8"}, {"q": "Что такое COMMIT в транзакции?", "a": "Фиксация (сохранение) всех изменений транзакции", "cat": "sql", "src": "КТ2 · В3-9"}, {"q": "Что означает аббревиатура БД?", "a": "База данных", "cat": "er", "src": "КТ2 · В6-14"}, {"q": "Что означает аббревиатура СУБД?", "a": "система управления базами данных", "cat": "er", "src": "КТ2 · В6-20"}, {"q": "Что означает аббревиатура ER?", "a": "сущность-связь", "cat": "er", "src": "КТ2 · В3-14"}, {"q": "Что такое сущность в ER-модели?", "a": "Любой различимый объект предметной области, информацию о котором хранят в БД → таблица", "cat": "er", "src": "КТ2 · В3-5"}, {"q": "Что такое атрибут в ER-модели?", "a": "Поименованная характеристика сущности → столбец таблицы", "cat": "er", "src": "КТ2 · В3-8"}, {"q": "Что такое связь в ER-модели?", "a": "Ассоциация между двумя и более сущностями (1:1, 1:N, N:M)", "cat": "er", "src": "КТ2 · В6-5"}, {"q": "Что такое отношение в реляционной БД?", "a": "Таблица", "cat": "er", "src": "КТ2 · В6-10"}, {"q": "Что такое составной ключ?", "a": "Первичный ключ из двух и более атрибутов", "cat": "er", "src": "КТ2 · В6-7"}, {"q": "Какая связь реализуется через три таблицы?", "a": "«Многие ко многим» (N:M): 2 таблицы сущностей + промежуточная (связующая)", "cat": "er", "src": "КТ2 · В6-6"}, {"q": "Какая связь реализуется через внешний ключ с UNIQUE?", "a": "«Один к одному» (1:1)", "cat": "er", "src": "КТ2 · В3-6"}, {"q": "Какое требование предъявляет 3НФ?", "a": "Таблица во 2НФ + отсутствует транзитивная зависимость; неключевые столбцы не зависят от других неключевых", "cat": "er", "src": "КТ2 · В3-7"}, {"q": "Напишите SQL-запрос для выборки всех дисциплин с количеством часов больше 100.", "a": "SELECT * FROM disciplines WHERE hours > 100;", "cat": "task", "src": "КТ2 · В6-21"}, {"q": "Напишите SQL-запрос для обновления оценки студента с id=1 по дисциплине id=2 на 5.", "a": "UPDATE student_discipline SET grade = 5 WHERE student_id = 1 AND discipline_id = 2;", "cat": "task", "src": "КТ2 · В6-22"}, {"q": "Напишите SQL-запрос для выборки всех студентов с их группами.", "a": "SELECT s.full_name, g.name FROM students s JOIN groups g ON s.group_id = g.group_id;", "cat": "task", "src": "КТ2 · В3-21"}, {"q": "Напишите SQL-запрос для создания таблицы students с полями id, full_name, email.", "a": "CREATE TABLE students (id INT AUTO_INCREMENT PRIMARY KEY, full_name VARCHAR(100) NOT NULL, email VARCHAR(100) UNIQUE);", "cat": "task", "src": "КТ2 · В3-22"}, {"q": "Что такое файловая система?", "a": "Порядок организации, хранения и именования данных на носителе.", "cat": "fs", "src": "Защита · С5"}, {"q": "Какие файловые системы вы знаете? Чем они отличаются?", "a": "FAT16 ≤2 ГБ; FAT32 ≤4 ГБ файл / ≤2 ТБ раздел; NTFS — большие файлы, права, шифрование, сжатие; ext4 — Linux, журналируемая; APFS — macOS/SSD.", "cat": "fs", "src": "Защита · С5"}, {"q": "Что такое корневой каталог?", "a": "Начальная точка ФС: C:\\ / /.", "cat": "fs", "src": "Защита · С5"}, {"q": "Что такое путь к файлу? Приведите пример.", "a": "Последовательность папок с адресом: C:\\Users\\Student\\Documents\\report.docx.", "cat": "fs", "src": "Защита · С5"}, {"q": "Из каких частей состоит имя файла?", "a": "Имя и расширение, разделённые точкой.", "cat": "fs", "src": "Защита · С5"}, {"q": "Что такое расширение файла? Для чего оно нужно?", "a": "Часть после точки; определяет тип файла и программу для открытия.", "cat": "fs", "src": "Защита · С5"}, {"q": "Какие атрибуты файлов вы знаете? Для чего они используются?", "a": "Только чтение, Скрытый, Системный, Архивный (см. §2).", "cat": "fs", "src": "Защита · С5"}, {"q": "Чем отличается копирование от перемещения?", "a": "Копия оставляет исходник; перемещение исходник удаляет.", "cat": "fs", "src": "Защита · С5"}, {"q": "Как безвозвратно удалить файл?", "a": "Shift + Delete (или удалить из корзины / очистить корзину).", "cat": "fs", "src": "Защита · С5"}, {"q": "Как найти все текстовые файлы на диске?", "a": "Маска *.txt в строке поиска Проводника.", "cat": "fs", "src": "Защита · С5"}, {"q": "Что означает маска поиска *.*?", "a": "Любое имя и любое расширение = все файлы (* — любое число символов, ? — один).", "cat": "fs", "src": "Защита · С5"}, {"q": "Как отсортировать файлы по размеру?", "a": "ПКМ → «Сортировка» → «Размер» → «По убыванию».", "cat": "fs", "src": "Защита · С5"}, {"q": "Что произойдёт, если удалить файл, находящийся в корзине?", "a": "Удалится безвозвратно, место освободится.", "cat": "fs", "src": "Защита · С5"}, {"q": "Чем отличается FAT32 от NTFS?", "a": "FAT32: ≤4 ГБ на файл, ≤2 ТБ раздел, нет прав/шифрования/сжатия; NTFS: всё это есть + большие файлы.", "cat": "fs", "src": "Защита · С5"}, {"q": "Что такое командная строка? Какие оболочки вы знаете?", "a": "CLI — ввод текстовых команд; CMD, PowerShell, Bash, Zsh.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как перейти в другую папку в командной строке?", "a": "cd путь (Linux cd, pwd — текущая).", "cat": "cli", "src": "Защита · С6"}, {"q": "Чем отличается copy от move?", "a": "copy оставляет исходник, move переносит (он же переименование).", "cat": "cli", "src": "Защита · С6"}, {"q": "Как создать файл в командной строке?", "a": "type nul > file.txt / echo текст > file.txt / Linux touch file.txt.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как скопировать папку со всем содержимым?", "a": "xcopy /E /I / cp -r.", "cat": "cli", "src": "Защита · С6"}, {"q": "Для чего используется команда ping?", "a": "Проверка доступности/соединения с узлом.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как узнать IP-адрес своего компьютера?", "a": "ipconfig /all / ifconfig -a.", "cat": "cli", "src": "Защита · С6"}, {"q": "Что показывает команда netstat?", "a": "Активные сетевые соединения, порты, состояния (netstat -an).", "cat": "cli", "src": "Защита · С6"}, {"q": "Как найти процесс по имени?", "a": "tasklist | findstr /I \"chrome\" / ps aux | grep -i chrome.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как завершить процесс по его PID?", "a": "taskkill /PID номер / kill -9 PID.", "cat": "cli", "src": "Защита · С6"}, {"q": "Что такое конвейер (pipe)? Приведите пример.", "a": "| передаёт вывод одной команды на вход другой: dir | findstr \".txt\".", "cat": "cli", "src": "Защита · С6"}, {"q": "Чем отличается > от >>?", "a": "> перезаписывает файл, >> дописывает в конец.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как отфильтровать вывод команды dir?", "a": "dir | findstr \".exe\" (grep в Linux).", "cat": "cli", "src": "Защита · С6"}, {"q": "Как сохранить вывод команды в файл?", "a": "dir > files.txt (>> — добавить).", "cat": "cli", "src": "Защита · С6"}, {"q": "Что такое пакетный файл? Как его создать?", "a": ".bat/.sh — текстовый файл со списком команд; создаётся в редакторе / через echo … > script.bat, запускается по имени.", "cat": "cli", "src": "Защита · С6"}, {"q": "Как работает команда tracert?", "a": "Последовательно увеличивает TTL и показывает все промежуточные маршрутизаторы до узла.", "cat": "cli", "src": "Защита · С6"}, {"q": "Для чего используется nslookup?", "a": "Запрос DNS-информации (имя → IP).", "cat": "cli", "src": "Защита · С6"}, {"q": "Чем отличается CMD от PowerShell?", "a": "CMD — классические текстовые команды; PowerShell — объектно-ориентированная оболочка с командлетами и расширенными возможностями.", "cat": "cli", "src": "Защита · С6"}, {"q": "Что такое СУБД MySQL?", "a": "Свободная реляционная СУБД, одна из самых популярных.", "cat": "sql", "src": "Защита · С7"}, {"q": "Какие основные функции выполняет СУБД?", "a": "Создание БД, наполнение/обновление, анализ, защита, целостность, транзакции, восстановление после сбоев.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое OpenServer? Какие компоненты он включает?", "a": "Портативная платформа Windows: Apache/Nginx, MySQL/MariaDB, PHP, phpMyAdmin, Redis/Memcached.", "cat": "sql", "src": "Защита · С7"}, {"q": "Какие типы данных MySQL вы знаете?", "a": "TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT, FLOAT, DOUBLE, DECIMAL, CHAR, VARCHAR, TEXT, DATE, TIME, DATETIME/TIMESTAMP, BOOLEAN, JSON, ENUM (+ YEAR, BLOB из КТ).", "cat": "sql", "src": "Защита · С7"}, {"q": "Чем отличается VARCHAR от CHAR?", "a": "Переменная длина vs фиксированная (CHAR добивает пробелами).", "cat": "sql", "src": "Защита · С7"}, {"q": "Чем отличается INT от DECIMAL?", "a": "Целое число vs точное дробное с заданной точностью DECIMAL(p,s).", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое PRIMARY KEY?", "a": "Уникально идентифицирует строку, не NULL, один на таблицу, может быть составным.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое FOREIGN KEY?", "a": "Ссылка на PK другой таблицы, обеспечивает ссылочную целостность.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое ограничение NOT NULL?", "a": "Запрещает вставку NULL.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое ограничение UNIQUE?", "a": "Уникальность значений в столбце.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое ограничение CHECK?", "a": "Проверка логического условия (MySQL 8.0+): CHECK (gpa >= 0 AND gpa <= 5).", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое AUTO_INCREMENT?", "a": "Автоматическое увеличение значения при INSERT (целочисленный ключ).", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое ON DELETE CASCADE?", "a": "При удалении родительской записи каскадно удаляются связанные.", "cat": "sql", "src": "Защита · С7"}, {"q": "Зачем нужен движок InnoDB?", "a": "Движок с поддержкой внешних ключей и транзакций.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое транзакция? Какие свойства ACID?", "a": "Единая последовательность операций: Atomicity, Consistency, Isolation, Durability.", "cat": "sql", "src": "Защита · С7"}, {"q": "Чем отличается COMMIT от ROLLBACK?", "a": "Зафиксировать изменения vs откатить все изменения транзакции.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое индекс? Зачем он нужен?", "a": "Структура данных, ускоряющая поиск и сортировку ценой места и скорости вставки.", "cat": "sql", "src": "Защита · С7"}, {"q": "Как создать индекс в MySQL?", "a": "CREATE INDEX idx_name ON table_name (column_name); (DROP INDEX idx_name ON table_name;).", "cat": "sql", "src": "Защита · С7"}, {"q": "Как посмотреть структуру таблицы?", "a": "DESCRIBE имя; (SHOW CREATE TABLE имя; — полный SQL).", "cat": "sql", "src": "Защита · С7"}, {"q": "Как посмотреть список таблиц в базе данных?", "a": "SHOW TABLES; после USE имя_бд;.", "cat": "sql", "src": "Защита · С7"}, {"q": "Что такое предметная область?", "a": "Часть реального мира, объекты и связи которой описывает БД.", "cat": "er", "src": "Защита · С8"}, {"q": "Назовите этапы проектирования базы данных.", "a": "Системный анализ → инфологическая (ER) → даталогическая (реляционная схема) → физическая (СУБД).", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое сущность, атрибут, ключ?", "a": "Различимый объект; его поименованная характеристика; минимальный набор атрибутов, однозначно идентифицирующий экземпляр.", "cat": "er", "src": "Защита · С8"}, {"q": "Какие типы атрибутов вы знаете?", "a": "Простой, составной, однозначный, многозначный, производный, обязательный, необязательный.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое связь? Какие типы связей существуют?", "a": "Ассоциация между сущностями: 1:1, 1:N, N:M.", "cat": "er", "src": "Защита · С8"}, {"q": "Как реализуется связь 1:1?", "a": "Внешний ключ в одной из таблиц + UNIQUE.", "cat": "er", "src": "Защита · С8"}, {"q": "Как реализуется связь 1:N?", "a": "Внешний ключ в таблице со стороны «многие».", "cat": "er", "src": "Защита · С8"}, {"q": "Как реализуется связь N:M?", "a": "Промежуточная таблица с двумя внешними ключами (итого три таблицы).", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое ER-диаграмма?", "a": "Графическое описание предметной области в терминах «сущность-связь».", "cat": "er", "src": "Защита · С8"}, {"q": "Чем отличается нотация Chen от Crow's Foot?", "a": "Chen: прямоугольник / овал / ромб / подчёркнутый ключ; Crow's Foot: прямоугольник с атрибутами, «вороньи лапки» = многие, черта = один, кружок = необязательность.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое нормализация? Зачем она нужна?", "a": "Приведение к нормальным формам для устранения избыточности и аномалий.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое 1НФ? Какие требования она предъявляет?", "a": "Нет дублей строк, атомарные значения, один тип данных в столбце, нет повторяющихся групп.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое 2НФ? Какие требования она предъявляет?", "a": "В 1НФ + первичный ключ + неключевые столбцы зависят от полного составного ключа.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое 3НФ? Какие требования она предъявляет?", "a": "Во 2НФ + нет транзитивной зависимости (неключевые не зависят от других неключевых).", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое транзитивная зависимость?", "a": "Неключевой атрибут зависит от другого неключевого, а не напрямую от ключа.", "cat": "er", "src": "Защита · С8"}, {"q": "Как преобразовать ER-модель в реляционную схему?", "a": "реляционная схема? → Сущность→таблица, атрибут→столбец, ключ→PK, 1:1→FK+UNIQUE, 1:N→FK, N:M→промежуточная, многозначный атрибут→отдельная таблица.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое внешний ключ? Как он используется?", "a": "Столбец, ссылающийся на PRIMARY KEY другой таблицы; поддерживает ссылочную целостность.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое ON DELETE CASCADE?", "a": "Каскадное удаление зависимых строк при удалении родителя.", "cat": "er", "src": "Защита · С8"}, {"q": "Какие инструменты проектирования БД вы знаете?", "a": "MySQL Workbench, draw.io, dbdiagram.io, ERwin, PowerDesigner, Lucidchart.", "cat": "er", "src": "Защита · С8"}, {"q": "Как проверить целостность базы данных?", "a": "Попытаться вставить некорректные данные: несуществующий FK, дубликат UNIQUE, нарушение CHECK — СУБД должна вернуть ошибку; затем аналитические запросы с JOIN/GROUP BY.", "cat": "er", "src": "Защита · С8"}, {"q": "Что такое Wireshark? Для чего он используется?", "a": "Свободный анализатор сетевых протоколов с открытым исходным кодом: захват и интерактивный просмотр трафика.", "cat": "net", "src": "Запас · С9"}, {"q": "Какие панели есть в интерфейсе Wireshark?", "a": "Панель инструментов, панель фильтров отображения, список пакетов, детали пакета, байты пакета, строка состояния.", "cat": "net", "src": "Запас · С9"}, {"q": "Чем отличается фильтр захвата от фильтра отображения?", "a": "Фильтр захвата применяется до начала захвата и определяет, какие пакеты будут записаны; фильтр отображения — после захвата и определяет, какие пакеты показаны.", "cat": "net", "src": "Запас · С9"}, {"q": "Как захватить трафик только для определённого IP-адреса?", "a": "host 192.168.1.1", "cat": "net", "src": "Запас · С9"}, {"q": "Как захватить только TCP-трафик?", "a": "tcp", "cat": "net", "src": "Запас · С9"}, {"q": "Как отфильтровать только HTTP-запросы?", "a": "http.request.method == \"GET\"", "cat": "net", "src": "Запас · С9"}, {"q": "Из каких полей состоит Ethernet-кадр?", "a": "MAC получателя 6 байт, MAC отправителя 6 байт, Тип/Длина 2 байта, Данные 46–1500 байт, FCS 4 байта.", "cat": "net", "src": "Запас · С9"}, {"q": "Что такое TTL? Каково максимальное значение?", "a": "Время жизни пакета, максимум 255 хопов.", "cat": "net", "src": "Запас · С9"}, {"q": "Что означают протоколы 1, 6, 17 в IP-пакете?", "a": "1 = ICMP, 6 = TCP, 17 = UDP.", "cat": "net", "src": "Запас · С9"}, {"q": "Что такое ARP? Как работают запрос и ответ?", "a": "Преобразование IP в MAC; ARP-запрос широковещательный, ARP-ответ индивидуальный.", "cat": "net", "src": "Запас · С9"}, {"q": "Что такое трёхстороннее рукопожатие TCP?", "a": "SYN → SYN-ACK → ACK (Flags 0x002 / 0x012 / 0x010).", "cat": "net", "src": "Запас · С9"}, {"q": "Чем отличается TCP от UDP?", "a": "TCP — надёжная передача с установкой соединения; UDP — быстрая передача без установки соединения.", "cat": "net", "src": "Запас · С9"}, {"q": "Как работает DNS? На какой порт отправляются запросы?", "a": "Преобразует имена в IP-адреса; запросы идут на UDP-порт 53.", "cat": "net", "src": "Запас · С9"}, {"q": "Как найти повторные передачи TCP?", "a": "tcp.analysis.retransmission", "cat": "net", "src": "Запас · С9"}, {"q": "Какие аномалии трафика можно выявить с помощью Wireshark?", "a": "TCP Retransmission, TCP Dup ACK, TCP ZeroWindow, Out-of-Order, RST.", "cat": "net", "src": "Запас · С9"}];
+  var CATS = ['fs', 'cli', 'sql', 'er'];
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function pick(a, k) { return shuffle(a.slice()).slice(0, k); }
+
+  /* --- новые вопросы, собранные программно из шаблонов семинаров --- */
+  function makeNew() {
+    var out = [];
+    var linux = [
+      ['показывает список файлов с деталями и скрытыми', 'ls -la'],
+      ['создаёт пустой файл', 'touch file.txt'],
+      ['создаёт директорию вместе с родительскими', 'mkdir -p a/b'],
+      ['копирует папку со всем содержимым', 'cp -r dir1 dir2'],
+      ['удаляет файл', 'rm file.txt'],
+      ['перемещает и переименовывает файл', 'mv a.txt b.txt'],
+      ['показывает текущую папку', 'pwd'],
+      ['выводит содержимое файла', 'cat file.txt'],
+      ['считает строки в файле', 'wc -l file.txt'],
+      ['ищет строку в файле', 'grep "текст" file.txt'],
+      ['показывает первые 10 строк', 'head -n 10 file.txt'],
+      ['очищает экран', 'clear']
+    ];
+    var win = [
+      ['показывает список файлов с деталями', 'dir /a'],
+      ['создаёт пустой файл', 'type nul > file.txt'],
+      ['удаляет папку', 'rmdir имя'],
+      ['удаляет файл', 'del file.txt'],
+      ['копирует папку со всем содержимым', 'xcopy /E /I'],
+      ['показывает сетевые соединения и порты', 'netstat -an'],
+      ['показывает список процессов', 'tasklist'],
+      ['завершает процесс по PID', 'taskkill /PID номер'],
+      ['показывает сетевую конфигурацию', 'ipconfig /all'],
+      ['трассирует маршрут', 'tracert google.com']
+    ];
+    var types = [
+      ['дробные числа с фиксированной точностью', 'DECIMAL(p, s)'],
+      ['большие тексты', 'TEXT'], ['большие двоичные данные', 'BLOB'],
+      ['год', 'YEAR'], ['дату и время', 'DATETIME'], ['перечисление значений', 'ENUM'],
+      ['строку фиксированной длины', 'CHAR(n)'], ['строку переменной длины', 'VARCHAR(n)'],
+      ['JSON-документы', 'JSON'], ['логические значения', 'BOOLEAN'],
+      ['очень большие целые числа', 'BIGINT'], ['время (часы, минуты, секунды)', 'TIME']
+    ];
+    var constr = [
+      ['гарантирует уникальность значений', 'UNIQUE'], ['запрещает NULL', 'NOT NULL'],
+      ['может быть составным', 'PRIMARY KEY'], ['проверяет логическое условие', 'CHECK'],
+      ['задаёт значение по умолчанию', 'DEFAULT'], ['автоматически увеличивает значение поля', 'AUTO_INCREMENT'],
+      ['обеспечивает ссылочную целостность', 'FOREIGN KEY'],
+      ['каскадно удаляет связанные записи', 'ON DELETE CASCADE']
+    ];
+    var er = [
+      ['реализуется через внешний ключ с UNIQUE', '1:1 (один к одному)'],
+      ['реализуется внешним ключом в таблице «многие»', '1:N (один ко многим)'],
+      ['реализуется тремя таблицами', 'N:M (многие ко многим)']
+    ];
+    var abbr = [
+      ['БД', 'База данных'], ['СУБД', 'Система управления базами данных'],
+      ['ER', 'Сущность-связь'], ['CLI', 'Интерфейс командной строки'],
+      ['ACID', 'Атомарность, согласованность, изоляция, долговечность'],
+      ['PK', 'Первичный ключ'], ['FK', 'Внешний ключ']
+    ];
+    var fs = [
+      ['при удалении файла из корзины', 'Файл удаляется безвозвратно'],
+      ['при удалении папки с файлами', 'Удалятся и папка, и все файлы внутри'],
+      ['при установке атрибута «Скрытый»', 'Файл не отображается в проводнике при стандартных настройках'],
+      ['при установке атрибута «Только чтение»', 'Файл нельзя изменить или удалить'],
+      ['при нажатии Shift + Delete', 'Файл удаляется без помещения в корзину']
+    ];
+    function take(arr, tpl, cat, n) {
+      shuffle(arr.map(function (_, i) { return i; })).slice(0, n).forEach(function (i) {
+        out.push({ q: tpl(arr[i][0]), a: arr[i][1], cat: cat, src: 'Новый' });
+      });
+    }
+    take(linux,  function (x) { return 'Какая команда Linux ' + x + '?'; }, 'cli', 3);
+    take(win,    function (x) { return 'Какая команда Windows CMD ' + x + '?'; }, 'cli', 3);
+    take(types,  function (x) { return 'Какой тип данных MySQL используется для «' + x + '»?'; }, 'sql', 3);
+    take(constr, function (x) { return 'Какое ограничение MySQL ' + x + '?'; }, 'sql', 3);
+    take(er,     function (x) { return 'Какая связь ' + x + '?'; }, 'er', 2);
+    take(abbr,   function (x) { return 'Что означает аббревиатура ' + x + '?'; }, 'er', 2);
+    take(fs,     function (x) { return 'Что произойдёт ' + x + '?'; }, 'fs', 2);
+    for (var i = 0; i < 2; i++) {
+      var kb = 2 + Math.floor(Math.random() * 7), by = 1 + Math.floor(Math.random() * 6);
+      if (i === 0) out.push({ q: 'Сколько байт в ' + kb + ' Кбайтах?', a: String(kb * 1024), cat: 'fs', src: 'Новый' });
+      else out.push({ q: 'Сколько бит в ' + by + ' ' + (by === 1 ? 'байте' : 'байтах') + '?', a: String(by * 8), cat: 'fs', src: 'Новый' });
+    }
+    var tables = [
+      { t: 'disciplines', c: 'hours', v: 100 }, { t: 'students', c: 'gpa', v: 4 },
+      { t: 'products', c: 'price', v: 1000 }, { t: 'books', c: 'year', v: 2020 },
+      { t: 'orders', c: 'amount', v: 500 }, { t: 'grades', c: 'grade', v: 4 }
+    ];
+    pick(tables, 4).forEach(function (o, k) {
+      if (k % 2 === 0) {
+        out.push({ q: 'Напишите SQL-запрос: выведите все записи из ' + o.t + ' со значением ' + o.c + ' больше ' + o.v + '.',
+                   a: 'SELECT * FROM ' + o.t + ' WHERE ' + o.c + ' > ' + o.v + ';', cat: 'task', src: 'Новый' });
+      } else {
+        var id = 1 + Math.floor(Math.random() * 5);
+        out.push({ q: 'Напишите SQL-запрос: установите ' + o.c + ' = ' + o.v + ' в таблице ' + o.t + ' для id = ' + id + '.',
+                   a: 'UPDATE ' + o.t + ' SET ' + o.c + ' = ' + o.v + ' WHERE id = ' + id + ';', cat: 'task', src: 'Новый' });
+      }
+    });
+    return shuffle(out);
+  }
+
+  /* --- сборка вариантов: новая перетасовка при каждом вызове --- */
+  function buildVariants(bank, count, includeNet, fresh) {
+    var freshQ = fresh || [];
+    var pool = bank.filter(function (x) { return includeNet || x.cat !== 'net'; }).concat(freshQ);
+    var byCat = {};
+    CATS.forEach(function (c) {
+      byCat[c] = pool.filter(function (x) { return x.cat === c; });
+    });
+    var netPool = pool.filter(function (x) { return x.cat === 'net'; });
+    var tasksBank = bank.filter(function (x) { return x.cat === 'task'; });
+    var tasksNew = freshQ.filter(function (x) { return x.cat === 'task'; });
+    var nums = shuffle(Array.from({ length: 30 }, function (_, i) { return i + 1; }));
+    var variants = [];
+    for (var v = 0; v < count; v++) {
+      var newItems = [], oldItems = [], seen = {};
+      CATS.forEach(function (c) {
+        var all = byCat[c];
+        var nw = all.filter(function (x) { return x.src === 'Новый'; });
+        var old = all.filter(function (x) { return x.src !== 'Новый'; });
+        pick(nw, 1).forEach(function (x) {          // новые — первыми, им приоритет
+          if (x && !seen[x.q]) { newItems.push(x); seen[x.q] = 1; }
+        });
+        pick(old, 5).forEach(function (x) {
+          if (x && !seen[x.q]) { oldItems.push(x); seen[x.q] = 1; }
+        });
+      });
+      var items = newItems.slice(0, 4);
+      shuffle(oldItems).forEach(function (x) { if (items.length < 20) items.push(x); });
+      var spare = shuffle(pool.filter(function (x) { return x.cat !== 'task'; }));
+      for (var s = 0; s < spare.length && items.length < 20; s++) {
+        if (!seen[spare[s].q]) { items.push(spare[s]); seen[spare[s].q] = 1; }
+      }
+      items = shuffle(items);
+      if (includeNet && netPool.length) {
+        var positions = [];
+        items.forEach(function (x, i) { if (x.src !== 'Новый') positions.push(i); });
+        shuffle(positions);
+        pick(netPool, 2).forEach(function (x, i) {
+          if (positions[i] !== undefined && !seen[x.q]) {
+            items[positions[i]] = x;
+            seen[x.q] = 1;
+          }
+        });
+      }
+      var sql = [pick(tasksNew, 1)[0] || pick(tasksBank, 1)[0], pick(tasksBank, 1)[0]];
+      variants.push({ num: nums[v], items: items.concat(shuffle(sql)) });
+    }
+    return { variants: variants, poolSize: pool.length, freshCount: freshQ.length };
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+  function badge(src) {
+    var cls = src.indexOf('КТ2') === 0 ? 'b-kt' : src.indexOf('Защита') === 0 ? 'b-def'
+            : src.indexOf('Новый') === 0 ? 'b-new' : 'b-net';
+    return '<span class="badge ' + cls + '">' + esc(src) + '</span>';
+  }
+  function renderVariant(v) {
+    var lis = v.items.map(function (x) {
+      var isTask = x.cat === 'task';
+      var body = isTask ? '<pre><code>' + esc(x.a) + '</code></pre>' : '<div>' + esc(x.a) + '</div>';
+      return '<li><div class="qrow"><span class="qnum"></span><span class="qtext">' + esc(x.q) + '</span>' +
+        badge(x.src) + '</div><details class="ans"><summary>' +
+        (isTask ? 'Показать SQL · 0.5 балла' : 'Показать ответ') + '</summary>' +
+        '<div class="ansbody">' + body + '</div></details></li>';
+    }).join('');
+    return '<article class="var-card"><div class="var-head"><h3>Вариант ' + v.num + '</h3>' +
+      '<span class="var-meta">22 вопроса · 5 баллов · 45 мин · 20 тестовых + 2 SQL-задачи</span></div>' +
+      '<div class="var-btns"><button type="button" data-act="show">Показать все ответы</button>' +
+      '<button type="button" data-act="hide">Скрыть ответы</button></div>' +
+      '<ol class="var-list">' + lis + '</ol></article>';
+  }
+
+  function init() {
+    var host = document.getElementById('variantsBox');
+    if (!host) return;
+    var n = 0;
+    function render() {
+      n++;
+      var count = parseInt(document.getElementById('varCount').value, 10);
+      var net = document.getElementById('netOn').checked;
+      var fresh = makeNew();
+      var res = buildVariants(BANK, count, net, fresh);
+      document.getElementById('genStat').textContent =
+        'Сборка №' + n + ' · ' + new Date().toLocaleTimeString('ru-RU') +
+        ' · ' + count + ' вариантов · ' + res.poolSize + ' вопросов в банке · ' +
+        res.freshCount + ' новых вопросов · ' + (net ? 'сети включены' : 'сети выключены');
+      host.innerHTML = res.variants.map(renderVariant).join('');
+    }
+    document.getElementById('shuffleBtn').addEventListener('click', render);
+    document.getElementById('varCount').addEventListener('change', render);
+    document.getElementById('netOn').addEventListener('change', render);
+    host.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button[data-act]') : null;
+      if (!b) return;
+      var card = b.closest('.var-card');
+      card.querySelectorAll('details.ans').forEach(function (d) { d.open = (b.dataset.act === 'show'); });
+    });
+    render();
+  }
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { BANK: BANK, buildVariants: buildVariants, makeNew: makeNew, shuffle: shuffle };
+  }
+  if (typeof document !== 'undefined') init();
+})();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a577d391c9d7a2e2',t:'MTc5NDE3NDk3Mw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a577d391c9d7a2e2',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
